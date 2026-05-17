@@ -1,0 +1,18 @@
+# Codex safety-net minimal rules.
+#
+# 本檔屬 execution layer 實作範例，不是 portable core 制度本身。
+# 只放跨 workspace 常見、低特定性、低風險的 command prefix。
+# 特定 workspace 的 approved helper 應由 hook 消費
+# <workspace>/ai-system/approved-scripts/allow，而不是逐支列在這裡。
+
+prefix_rule(
+    pattern = ["git", "ls-remote"],
+    decision = "allow",
+    justification = "Read-only query of remote Git refs."
+)
+
+prefix_rule(
+    pattern = ["git", "fetch"],
+    decision = "allow",
+    justification = "Read-only synchronization of remote Git refs into the current local repo/worktree."
+)

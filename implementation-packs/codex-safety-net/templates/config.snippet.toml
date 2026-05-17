@@ -1,0 +1,32 @@
+# Codex safety-net config snippet.
+#
+# 這是可攜範本，不應原樣覆蓋既有 ~/.codex/config.toml。
+# 若使用 generic snippet，請先將下方 placeholder 換成目標機器實際路徑。
+# 若 installer 產生 resolved snippet，優先合併 resolved snippet。
+
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+default_permissions = "workspace"
+
+[sandbox_workspace_write]
+network_access = false
+
+[permissions.workspace.filesystem]
+":minimal" = "read"
+"<CODEX_BINARY_PATH>" = "read"
+"<CODEX_RUNTIME_READ_PATH>" = "read"
+"<CODEX_HOME>" = "read"
+"/tmp" = "write"
+":project_roots" = { "." = "write", "AGENTS.md" = "read", "ai-system" = "read" }
+
+[features]
+hooks = true
+
+[[hooks.PermissionRequest]]
+matcher = "^Bash$"
+
+[[hooks.PermissionRequest.hooks]]
+type = "command"
+command = 'TRUSTED_SCRIPT_DIR="<WORKSPACE_ROOT>/ai-system/approved-scripts/allow" EXPECTED_CWD="<WORKSPACE_ROOT>" python3 "<CODEX_HOME>/hooks/allow_trusted_script_permission.py"'
+timeout = 5
+statusMessage = "Checking trusted script approval"

@@ -1,0 +1,106 @@
+# Codex safety-net optional devops read-only rules.
+#
+# 本檔是 optional profile，不是 default。只有目標 workspace 確實使用
+# GitHub CLI 或 Kubernetes CLI 時才合併到實際 Codex rules。
+
+prefix_rule(
+    pattern = ["gh", "auth", "status"],
+    decision = "allow",
+    justification = "Read-only query of GitHub authentication state."
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "status"],
+    decision = "allow",
+    justification = "Read-only query of GitHub pull request status."
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "view"],
+    decision = "allow",
+    justification = "Read-only query of GitHub pull request details."
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", "checks"],
+    decision = "allow",
+    justification = "Read-only query of GitHub pull request checks."
+)
+
+prefix_rule(
+    pattern = ["gh", "run", "list"],
+    decision = "allow",
+    justification = "Read-only query of GitHub Actions runs."
+)
+
+prefix_rule(
+    pattern = ["gh", "run", "view"],
+    decision = "allow",
+    justification = "Read-only query of GitHub Actions run details."
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", "list"],
+    decision = "allow",
+    justification = "Read-only query of GitHub issue list."
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", "view"],
+    decision = "allow",
+    justification = "Read-only query of GitHub issue details."
+)
+
+prefix_rule(
+    pattern = ["gh", "release", "list"],
+    decision = "allow",
+    justification = "Read-only query of GitHub releases."
+)
+
+prefix_rule(
+    pattern = ["gh", "release", "view"],
+    decision = "allow",
+    justification = "Read-only query of GitHub release details."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "get"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes resources."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "describe"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes resource details."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "logs"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes pod logs."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "rollout", "status"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes rollout status."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "rollout", "history"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes rollout history."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "top"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes resource metrics."
+)
+
+prefix_rule(
+    pattern = ["kubectl", "version"],
+    decision = "allow",
+    justification = "Read-only query of Kubernetes client and server version."
+)

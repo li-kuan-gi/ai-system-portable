@@ -1,0 +1,37 @@
+# 作業系統與編輯器狀態
+.DS_Store
+Thumbs.db
+*~
+.idea/
+.vscode/
+
+# AI service runtime 與本機狀態
+.codex/
+.claude/
+.agents/
+
+# Secret、憑證與本機設定
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+auth.json
+secrets/
+
+# Python 與測試產物
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Log、cache 與安裝備份
+*.log
+logs/
+cache/
+tmp/
+*.bak
+*.backup
+.ai-system-install-backups/

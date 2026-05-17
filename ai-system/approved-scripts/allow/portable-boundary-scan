@@ -1,0 +1,110 @@
+#!/usr/bin/env sh
+set -eu
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  portable-boundary-scan [--root <portable-package-root>] [--reject-prefix <old-prefix>]...
+
+Prints package-owned root entries outside the portable package allowlist.
+Runtime mount points injected by an AI service are ignored by default because
+they are not portable package content.
+USAGE
+}
+
+root=.
+reject_prefixes=
+allowed_root_entries='.gitignore AGENTS.md CODE_OF_CONDUCT.md CONTRIBUTING.md LICENSE README.md PORTABILITY.md SECURITY.md SERVICE_PORTABILITY.md ai-system implementation-packs scripts service-packs templates'
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --root)
+      root=${2:-}
+      shift 2
+      ;;
+    --reject-prefix)
+      prefix=${2:-}
+      case "$prefix" in
+        ""|*/*|*" "*)
+          echo "reject prefix must be a non-empty path segment without spaces" >&2
+          exit 2
+          ;;
+      esac
+      reject_prefixes="$reject_prefixes $prefix"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "unknown argument: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [ -z "$root" ] || [ ! -d "$root" ]; then
+  echo "root must be an existing directory" >&2
+  exit 2
+fi
+
+root=$(CDPATH= cd -- "$root" && pwd)
+found=false
+
+is_mount_point() {
+  if command -v mountpoint >/dev/null 2>&1; then
+    mountpoint -q "$1"
+    return
+  fi
+  return 1
+}
+
+check_path() {
+  p=$1
+  [ -e "$p" ] || [ -L "$p" ] || return 0
+  if is_mount_point "$p"; then
+    return 0
+  fi
+  printf '%s\n' "$p"
+  found=true
+}
+
+is_allowed_root_entry() {
+  name=$1
+  if [ "$name" = ".git" ]; then
+    return 0
+  fi
+  for allowed in $allowed_root_entries; do
+    if [ "$name" = "$allowed" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+scan_root_allowlist() {
+  for p in "$root"/* "$root"/.[!.]* "$root"/..?*; do
+    [ -e "$p" ] || [ -L "$p" ] || continue
+    name=${p##*/}
+    if is_allowed_root_entry "$name"; then
+      continue
+    fi
+    check_path "$p"
+  done
+}
+
+scan_root_allowlist
+
+for prefix in $reject_prefixes; do
+  for p in "$root"/"$prefix"-*; do
+    check_path "$p"
+  done
+done
+
+if [ "$found" = "true" ]; then
+  exit 1
+fi
+
+exit 0
