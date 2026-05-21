@@ -13,11 +13,10 @@ network_access = false
 
 [permissions.workspace.filesystem]
 ":minimal" = "read"
-"<CODEX_BINARY_PATH>" = "read"
 "<CODEX_RUNTIME_READ_PATH>" = "read"
 "<CODEX_HOME>" = "read"
 "/tmp" = "write"
-":project_roots" = { "." = "write", "AGENTS.md" = "read", "ai-system" = "read" }
+"<WORKSPACE_ROOT>" = { "." = "write", "AGENTS.md" = "read", "ai-system" = "read" }
 
 [features]
 hooks = true

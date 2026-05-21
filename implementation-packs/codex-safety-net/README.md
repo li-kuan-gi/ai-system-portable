@@ -110,7 +110,7 @@ rollback 時，從該 backup directory 將 `hooks/` 與 `rules/` 內檔案複製
 - `config.toml` 已存在且是空檔：直接用 resolved snippet 建立內容。
 - `config.toml` 已存在且有未知內容：預設停止；若使用 `--backup-existing`，會先備份再以 resolved snippet 取代。
 
-若要人工合併，優先合併 resolved snippet，因為其中已帶入實際 workspace、`CODEX_HOME`、Codex binary 路徑與 runtime read path。不要在未備份時直接覆蓋既有 config。
+若要人工合併，優先合併 resolved snippet，因為其中已帶入實際 workspace、`CODEX_HOME` 與 Codex runtime read path。workspace 權限會使用實際絕對路徑，不使用 `:project_roots`。對 npm-style Codex 安裝，runtime read path 會指向 `@openai/codex` package root，而不是只允許 launcher shim。不要在未備份時直接覆蓋既有 config。
 
 可重跑 hook probe：
 

@@ -200,12 +200,10 @@ sed_replacement_escape() {
 write_resolved_snippet() {
   workspace_escaped=$(sed_replacement_escape "$workspace_abs")
   codex_home_escaped=$(sed_replacement_escape "$codex_home_abs")
-  codex_bin_escaped=$(sed_replacement_escape "$codex_bin_abs")
   codex_runtime_read_path_escaped=$(sed_replacement_escape "$codex_runtime_read_path")
   sed \
     -e "s/<WORKSPACE_ROOT>/$workspace_escaped/g" \
     -e "s/<CODEX_HOME>/$codex_home_escaped/g" \
-    -e "s/<CODEX_BINARY_PATH>/$codex_bin_escaped/g" \
     -e "s/<CODEX_RUNTIME_READ_PATH>/$codex_runtime_read_path_escaped/g" \
     "$snippet_src" > "$resolved_snippet_dst"
   chmod 0644 "$resolved_snippet_dst"

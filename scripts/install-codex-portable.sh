@@ -346,7 +346,7 @@ record_codex_agent_settings() {
     echo "- **config snippet**：$codex_home_abs/templates/portable-codex-safety-net.config.resolved.toml"
     echo "- **generic config snippet**：$codex_home_abs/templates/portable-codex-safety-net.config.snippet.toml"
     echo "- **config.toml**：$codex_home_abs/config.toml"
-    echo "- **sandbox note**：workspace permission must allow both the launcher binary and the Codex runtime read path. For npm-style installs, the launcher can be a symlink into a package that later executes native vendor files under that package."
+    echo "- **sandbox note**：workspace permission must allow the Codex runtime read path. For npm-style installs, the launcher can be a symlink into a package that later executes native vendor files under that package, so allowing only the launcher shim is insufficient."
     echo ""
     echo "### Codex Service Storage Map"
     echo ""
