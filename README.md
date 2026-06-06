@@ -35,18 +35,18 @@ portable core 以三種責任分工：
 |---|---|---|
 | 制度 | 控制面：目標、判準、停下 gate、變更規則 | `ai-system/rules.md`、`constraints-detail.md`、`governance/` |
 | 知識 | 事實面：制度知識、安全網知識、知識系統知識與任務知識 | `ai-system/knowledge/` |
-| 安全網 | 執行面：sandbox、hook、permission、approved scripts、機械式保護 | `ai-system/safety-net/`、`approved-scripts/`、`implementation-packs/` |
+| 安全網 | 執行面：sandbox、hook、permission、approved scripts、機械式保護 | `ai-system/safety-net.md`、`approved-scripts/`、`implementation-packs/` |
 
-完整契約見 `ai-system/contracts.md`。
+完整契約見 `ai-system/governance/contracts.md`。
 
 ## 分層
 
 | 層級 | 用途 | 例子 |
 |---|---|---|
-| 可攜核心 | 穩定入口、責任契約、規則、gate、治理原則與通用 helper | `entry.md`、`contracts.md`、`rules.md`、`constraints-detail.md`、`governance/principles.md` |
+| 可攜核心 | 穩定入口、責任契約、規則、gate、治理原則與通用 helper | `entry.md`、`rules.md`、`constraints-detail.md`、`safety-net.md`、`governance/contracts.md`、`governance/principles.md` |
 | Workspace skills | 任務路由與可重複工作流入口 | `ai-system/skills/*/SKILL.md` |
 | Knowledge | 已驗證事實、制度 / 安全網 / 知識系統脈絡與任務知識 | `ai-system/knowledge/` |
-| Safety net | 機械式保護契約與可審查 executable 入口 | `ai-system/safety-net/`、`ai-system/approved-scripts/allow/`、`prompt/` |
+| Safety net | 機械式保護契約與可審查 executable 入口 | `ai-system/safety-net.md`、`ai-system/approved-scripts/allow/`、`prompt/` |
 | Instance adapter | 特定公司 / 產品 / 工具 / 環境內容 | 自訂 skills、knowledge、scripts、secrets |
 | Service pack | 特定 AI 服務的入口、設定、hook / permission 實作 | `service-packs/`、`implementation-packs/` |
 
@@ -130,10 +130,38 @@ scripts/install-codex-command.sh \
 4. secrets 預設留在 workspace 外，除非有明確 local-only 規則允許。
 5. 依 `PORTABILITY.md` 的驗證清單檢查。
 
+## Claude Code 導入
+
+Claude Code 使用者可用一步導入腳本，先 dry-run：
+
+```sh
+scripts/install-claude-portable.sh \
+  --target-root <WORKSPACE_ROOT> \
+  --dry-run
+```
+
+確認後改用 `--apply`。它會一次安裝 portable core、`CLAUDE.md` 入口，以及 Claude safety-net（PreToolUse permission hooks + `settings.json` + sandbox 圍堵）到 `<WORKSPACE_ROOT>/.claude`。若目標已存在對應檔案，預設拒絕覆寫；確認要更新時先 dry-run，再使用 `--backup-existing`。
+
+只要安裝安全網（已有 portable core 與 `CLAUDE.md`）時：
+
+```sh
+implementation-packs/claude-safety-net/scripts/install-safety-net.sh \
+  --workspace <WORKSPACE_ROOT> \
+  --dry-run
+```
+
+安裝後可跑回歸 probe 驗證 hook：
+
+```sh
+python3 implementation-packs/claude-safety-net/scripts/probe-hook.py
+```
+
+若目標 workspace 使用 kubectl / helm / argocd，再把 `implementation-packs/claude-safety-net/templates/settings.devops-readonly.example.json` 合併進 `.claude/settings.json`。（git 與 gh 已在中性預設內。）
+
 ## AI 服務分層
 
 Portable core 只定義制度契約，不假設使用 Codex、Claude Code 或其他服務。
 
 - Codex / OpenAI Codex CLI 相關安全網範例在 `implementation-packs/codex-safety-net/` 與 `service-packs/codex/`。
-- Claude Code 入口與設定模板在 `service-packs/claude-code/`。
+- Claude Code 入口模板在 `service-packs/claude-code/`，安全網（hooks + `settings.json`）在 `implementation-packs/claude-safety-net/`，一步安裝用 `scripts/install-claude-portable.sh`。
 - 其他 AI 服務應新增自己的 `service-packs/<service>/`，只放該服務的入口、設定、permission、hook、skill bridge 或安裝說明。

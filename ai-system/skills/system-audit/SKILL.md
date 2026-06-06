@@ -12,7 +12,7 @@
 
 修改制度前，必須先判斷每段文字的主要讀者與任務情境。不要把只給制度維護者看的整理規則放進日常任務 agent 的入口心智模型。
 
-責任模型看 `ai-system/contracts.md`，共通原則看 `ai-system/governance/principles.md`；修改邊界看 `ai-system/rules.md` 與 `ai-system/constraints-detail.md`。本 skill 只負責審計與制度重整流程。
+責任模型看 `ai-system/governance/contracts.md`，共通原則看 `ai-system/governance/principles.md`；修改邊界看 `ai-system/rules.md` 與 `ai-system/constraints-detail.md`。本 skill 只負責審計與制度重整流程。
 
 ## 紀錄寫入
 
@@ -50,7 +50,7 @@ ai-system/approved-scripts/allow/friction-notes-append
 再讀制度文件：
 
 - `rules.md`
-- `contracts.md`
+- `governance/contracts.md`
 - `constraints-detail.md`
 - 命中的 skills
 - `governance/principles.md`

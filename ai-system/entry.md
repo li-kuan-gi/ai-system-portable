@@ -13,7 +13,8 @@
 ## 按需深讀
 
 - 邊界不清或高風險操作 -> `ai-system/constraints-detail.md`
-- 制度 / 知識 / 安全網責任模型 -> `ai-system/contracts.md`
+- 安全網控制規範 -> `ai-system/safety-net.md`
+- 制度 / 知識 / 安全網責任模型 -> `ai-system/governance/contracts.md`
 - 制度審計、制度制定、規則衝突或治理原則 -> `ai-system/governance/principles.md`
 - 延續前次對話、交接狀態或未完成決策 -> `ai-system/knowledge/context/agent-history.md`
 - 使用者偏好、workspace 設定、AI service 設定或 launcher 設定 -> `ai-system/knowledge/context/agent-settings.md`

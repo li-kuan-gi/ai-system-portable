@@ -9,7 +9,7 @@
 - sandbox / filesystem / hook config snippet
 - trusted approved script directory
 
-正式安全網契約見 `ai-system/safety-net/README.md`；本 pack 只是一種 Codex 實作方式。
+正式安全網契約見 `ai-system/safety-net.md`；本 pack 只是一種 Codex 實作方式。
 
 ## 包含內容
 

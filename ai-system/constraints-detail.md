@@ -42,18 +42,7 @@
 - **prompt**：事實不足、制度不明或制度矛盾、影響非本機服務、共享協作承諾、可控但不可逆或高回頭成本操作。
 - **forbidden**：secret 外洩、繞過 policy、未受控 detached 長時間服務、無法界定目標 / 影響 / recovery 的破壞性操作。
 
-常見例子：
-
-| 類型 | 預設 |
-|---|---|
-| GET API、SQL SELECT、讀檔、read-only log、`git log/diff/fetch` | allow |
-| 本機可逆 code / 文件修改 | allow |
-| commit、push、PR、merge、release、deploy、對外發布 | prompt |
-| POST/PUT/PATCH/DELETE API、SQL mutation、infra mutation、共享 runtime restart | prompt |
-| hook、permission、sandbox、approved-scripts 分類、rules profile 或 safety-net installer 變更 | prompt |
-| 破壞性本機操作 | prompt；若影響與 recovery 無法界定則 forbidden |
-| secret 寫入 `.md` 或 git-tracked 檔案 | forbidden |
-| unmanaged detached service | forbidden |
+具體命令的 allow / prompt / forbidden 分類以 `ai-system/safety-net.md` 為唯一正式來源，本檔不另列命令表。
 
 ## 2. 本機執行邊界
 

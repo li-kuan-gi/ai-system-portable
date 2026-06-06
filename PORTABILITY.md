@@ -3,7 +3,7 @@
 ## 可放入 Portable Core 的內容
 
 - `ai-system/entry.md` agent 日常入口契約，且不綁定特定 AI 服務
-- `ai-system/contracts.md` 制度 / 知識 / 安全網責任模型
+- `ai-system/governance/contracts.md` 制度 / 知識 / 安全網責任模型
 - 最小行為規則與高回頭成本 gate
 - 治理原則與制度修改判準
 - 通用行為限制細則
@@ -36,7 +36,6 @@ ai-system/
   skills/<workspace-task>/references/
   knowledge/context/
   knowledge/domains/
-  safety-net/references/
   approved-scripts/allow/<instance-helper>
   approved-scripts/prompt/<instance-helper>
 ```

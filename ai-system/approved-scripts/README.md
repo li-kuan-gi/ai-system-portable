@@ -4,7 +4,7 @@ This directory is the source of truth for agent-facing executable helper classif
 
 It does not carry hook installers, per-file command policy, credentials, or instance-specific tool configuration.
 
-在 portable model 中，`approved-scripts/` 是安全網的 helper 分類面。安全網契約見 `ai-system/safety-net/README.md`；execution layer 可以消費這裡的分類，但不應把某個 runtime 的 permission table 反過來當成制度本體。
+在 portable model 中，`approved-scripts/` 是安全網的 helper 分類面。安全網契約見 `ai-system/safety-net.md`；execution layer 可以消費這裡的分類，但不應把某個 runtime 的 permission table 反過來當成制度本體。
 
 ## Directories
 

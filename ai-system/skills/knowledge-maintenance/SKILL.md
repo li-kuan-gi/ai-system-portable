@@ -10,7 +10,7 @@
 
 思考時站在執行任務的 agent 視角：下一個 agent 能不能快速找到正確入口、正確理解並真的遵守？
 
-責任模型看 `ai-system/contracts.md`，共通原則看 `ai-system/governance/principles.md`；修改邊界看 `ai-system/rules.md` 與 `ai-system/constraints-detail.md`。
+責任模型看 `ai-system/governance/contracts.md`，共通原則看 `ai-system/governance/principles.md`；修改邊界看 `ai-system/rules.md` 與 `ai-system/constraints-detail.md`。
 
 ## 紀錄寫入
 

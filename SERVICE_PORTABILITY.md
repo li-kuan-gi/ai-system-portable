@@ -21,7 +21,7 @@ portable core 的目標是讓同一套制度能被不同 AI 服務消費。
 3. `ai-system/entry.md` 指向 `ai-system/rules.md`。
 4. 任務路由由 `ai-system/skills/README.md` 管理。
 5. 可執行 helper 的正式入口是 `ai-system/approved-scripts/allow/` 與 `prompt/`。
-6. 安全網契約由 `ai-system/safety-net/README.md` 定義；service-specific permission / hook / sandbox 只是實作。
+6. 安全網契約由 `ai-system/safety-net.md` 定義；service-specific permission / hook / sandbox 只是實作。
 7. secrets 不進 workspace，不進 `.md`，不進 git-tracked path。
 8. service-specific permission table 不是制度真相來源。
 

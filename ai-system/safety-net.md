@@ -26,11 +26,32 @@ portable core 內的安全網來源分三層：
 
 | 層級 | 來源 | 用途 |
 |---|---|---|
-| 契約 | `ai-system/safety-net/README.md` | 定義安全網應承擔什麼 |
+| 契約 | `ai-system/safety-net.md` | 定義安全網應承擔什麼、命令如何分類 |
 | helper 分類 | `ai-system/approved-scripts/README.md` 與 `allow/`、`prompt/` | 定義 agent-facing executable 的授權分類 |
 | 實作範例 | `implementation-packs/` | 示範特定 runtime 如何落地 |
 
 execution layer 可以消費 `approved-scripts/allow`，但不應反過來把某個 runtime 的 permission table 當成制度本體。
+
+## 命令分類
+
+本檔是 portable core 命令 allow / prompt / forbidden 分類的唯一正式來源；其他制度文件不另列命令表。判準不是單純有沒有寫入，而是是否缺少足夠事實、會不會跨出本機、碰到共享邊界，或造成不可逆後果。
+
+| 類型 | 預設 |
+|---|---|
+| GET API、SQL SELECT、讀檔、read-only log、`git log/diff/fetch` | allow |
+| 本機可逆 code / 文件修改 | allow |
+| `approved-scripts/allow/` 下入口、受控 safe pull helper（clean worktree、fast-forward） | allow |
+| commit、push、PR、merge、release、deploy、對外發布 | prompt |
+| POST/PUT/PATCH/DELETE API、SQL mutation、infra mutation、共享 runtime restart | prompt |
+| hook、permission、sandbox、approved-scripts 分類、rules profile 或 safety-net installer 變更 | prompt |
+| `approved-scripts/prompt/` 下入口 | prompt |
+| 破壞性本機操作 | prompt；若影響與 recovery 無法界定則 forbidden |
+| secret 寫入 `.md` 或 git-tracked 檔案 | forbidden |
+| unmanaged detached service | forbidden |
+
+預設值：未列入 allow 的命令，預設歸 prompt。各 AI 服務的 execution layer 可把 prompt 縮窄為更嚴，不得放寬。
+
+具體命令的判斷情境與邊界細則見 `ai-system/constraints-detail.md`；本檔只定義分類結果。
 
 ## 實作結果變更規則
 

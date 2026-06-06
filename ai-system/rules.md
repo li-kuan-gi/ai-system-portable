@@ -48,4 +48,4 @@
 - 任務若已有明確路由，應優先沿既有路由執行，而不是每次重建流程。
 - agent 應主動提出更好的做法、規則摩擦或路由缺口；被限制的是高回頭成本行動，不是思考與改良建議。
 - 各任務工作流優先看命中的 workspace skill：`ai-system/skills/`。未命中 skill 或 skill 沒有指示時，再看 `ai-system/knowledge/`。
-- 需要判斷制度 / 知識 / 安全網分工時，看 `ai-system/contracts.md`；需要判斷制度設計、制度摩擦或治理演化時，看 `ai-system/governance/principles.md`。歷史紀錄、摩擦紀錄與提案只有制度審計與知識治理任務才主動讀。
+- 需要判斷制度 / 知識 / 安全網分工時，看 `ai-system/governance/contracts.md`；需要判斷制度設計、制度摩擦或治理演化時，看 `ai-system/governance/principles.md`。歷史紀錄、摩擦紀錄與提案只有制度審計與知識治理任務才主動讀。

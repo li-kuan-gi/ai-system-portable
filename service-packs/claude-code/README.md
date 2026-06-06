@@ -5,10 +5,10 @@
 依 Claude Code 官方文件，幾個穩定入口是：
 
 - `CLAUDE.md` 或 `.claude/CLAUDE.md`：project memory / agent instructions
-- `.claude/settings.json`：可 commit 的 project settings
+- `.claude/settings.json`：可 commit 的 project settings（permission、sandbox、hooks）
 - `.claude/settings.local.json`：不應 commit 的 local settings
 - `.claude/skills/<skill-name>/SKILL.md`：project skills
-- `.claude/commands/`：既有 custom commands 仍可用，但 skills 是建議方向
+- `.claude/hooks/`：settings JSON 內 hook 引用的腳本
 - Claude Code hooks：定義在 settings JSON 內，用來在工具事件前後執行檢查或提醒
 
 ## 本 pack 提供
@@ -16,17 +16,40 @@
 ```text
 templates/
   CLAUDE.md
-  .claude/settings.json
   .claude/skills/portable-entry/SKILL.md
-  .claude/hooks/README.md
 ```
 
-## 導入方式
+入口（`CLAUDE.md` + portable-entry skill）放在本 service pack；**安全網（hooks + `settings.json`）放在 `implementation-packs/claude-safety-net/`**，因為它是 execution layer 實作而非服務入口。
 
-1. 將 portable core 放到 workspace root。
+## 一步導入（建議）
+
+```sh
+scripts/install-claude-portable.sh \
+  --target-root <WORKSPACE_ROOT> \
+  --dry-run
+```
+
+確認後改用 `--apply`。它會一次安裝：
+
+1. portable core（`AGENTS.md` + `ai-system`）到 `<WORKSPACE_ROOT>`
+2. `CLAUDE.md` 入口到 `<WORKSPACE_ROOT>`
+3. Claude safety-net hooks 與 `settings.json` 到 `<WORKSPACE_ROOT>/.claude`
+
+若目標已存在對應檔案，預設拒絕覆寫；先 dry-run，再加 `--backup-existing`。
+
+## 手動導入
+
+1. 將 portable core 放到 workspace root（或用 `scripts/install-portable-system.sh`）。
 2. 將 `templates/CLAUDE.md` 複製到 workspace root 的 `CLAUDE.md`，或合併到既有 `CLAUDE.md`。
-3. 將 `templates/.claude/settings.json` 合併到 `.claude/settings.json`。
-4. 若要讓 Claude Code 以 skill 方式顯式讀 portable entry，可複製 `templates/.claude/skills/portable-entry/`。
+3. 若要讓 Claude Code 以 skill 方式顯式讀 portable entry，複製 `templates/.claude/skills/portable-entry/`。
+4. 安裝安全網：
+
+   ```sh
+   implementation-packs/claude-safety-net/scripts/install-safety-net.sh \
+     --workspace <WORKSPACE_ROOT> \
+     --dry-run
+   ```
+
 5. 任何 local-only 設定放在 `.claude/settings.local.json`，不要 commit。
 
 ## 與 Portable Core 的關係
@@ -41,13 +64,14 @@ ai-system/entry.md -> ai-system/rules.md -> ai-system/skills/README.md
 
 ## 權限與安全網
 
-Claude Code 的 `.claude/settings.json` 可設定 `permissions.allow` / `permissions.deny`。本 pack 只提供保守模板：
+`.claude/settings.json`、PreToolUse hook 與 sandbox 圍堵由 `implementation-packs/claude-safety-net/` 提供與安裝：
 
+- 自動 allow `ai-system/approved-scripts/allow/` 下的 trusted script 與 `.worktrees/` 內編輯
+- deny 未受控 detached / 常駐服務
 - deny 常見 secret / env 檔讀取
-- 不預設 allow 任何 destructive command
-- 不把 `ai-system/approved-scripts/allow` 自動映射成 allow，除非你另行實作並驗證 hook
+- sandbox filesystem / network 圍堵，保護 `ai-system`、`CLAUDE.md`、`AGENTS.md`、`.claude/hooks`
 
-若要實作「trusted approved script」自動放行，建議新增 Claude Code 專用 hook。不要直接沿用 Codex hook，因為兩者 hook event payload 和 decision semantics 不同。
+正式安全網契約見 `ai-system/safety-net.md`；該 pack 只是一種 Claude Code 實作方式。git 與 gh 已在中性預設內；kubectl / helm / argocd 等 devops 設定放在 `implementation-packs/claude-safety-net/templates/settings.devops-readonly.example.json`，按需合併。
 
 ## 參考
 

@@ -1,0 +1,28 @@
+{
+  "_comment": "Optional devops read-only example. Merge into settings.json only when the target workspace actually uses these tools. Mirrors the codex devops-readonly.example.rules intent: keep infra tools out of the neutral default. gh (GitHub CLI) is already in the neutral settings.snippet.json.",
+  "permissions": {
+    "allow": [
+      "Bash(kubectl get:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl top:*)",
+      "Bash(kubectl rollout status:*)",
+      "Bash(kubectl rollout history:*)",
+      "Bash(kubectl version:*)"
+    ]
+  },
+  "sandbox": {
+    "excludedCommands": [
+      "kubectl get*", "kubectl describe*", "kubectl logs*", "kubectl top*",
+      "kubectl rollout status*", "kubectl rollout history*", "kubectl version*",
+      "docker *",
+      "kubectl apply*", "kubectl create*", "kubectl delete*", "kubectl edit*",
+      "kubectl patch*", "kubectl replace*", "kubectl scale*", "kubectl exec*", "kubectl cp*",
+      "kubectl set *", "kubectl annotate*", "kubectl label*",
+      "kubectl rollout restart*", "kubectl rollout undo*", "kubectl rollout pause*", "kubectl rollout resume*",
+      "kubectl drain*", "kubectl cordon*", "kubectl uncordon*", "kubectl taint*",
+      "helm install*", "helm upgrade*", "helm rollback*", "helm uninstall*",
+      "argocd app sync*", "argocd app set*", "argocd app delete*"
+    ]
+  }
+}

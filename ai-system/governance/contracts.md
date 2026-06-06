@@ -67,7 +67,7 @@ portable core 以三種責任分工，不以資料夾名稱本身作為邊界。
 4. 不覆蓋 auth、session、cache、log、secret 或私有狀態。
 5. 以 patchlog 或 adapter 自己的正式紀錄留下變更脈絡。
 
-安全網核心契約見 `ai-system/safety-net/README.md`。具體 runtime 實作放在 `implementation-packs/` 或 instance adapter。
+安全網核心契約與命令分類見 `ai-system/safety-net.md`。具體 runtime 實作放在 `implementation-packs/` 或 instance adapter。
 
 ## 契約化檢查
 

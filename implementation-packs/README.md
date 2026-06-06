@@ -17,3 +17,4 @@ portable core 定義制度契約；implementation pack 提供某個 runtime、la
 | Pack | 用途 |
 |---|---|
 | `codex-safety-net/` | Codex `~/.codex` execution layer 範例：PermissionRequest hook、minimal rules、optional rules profiles、config snippet |
+| `claude-safety-net/` | Claude Code `.claude/` execution layer 範例：PreToolUse permission hooks、`settings.json` permission + sandbox 範本、optional devops example、安裝器 |

@@ -1,6 +1,6 @@
 # Knowledge
 
-本目錄存放已驗證且可重用的知識。知識是 portable system 的事實面，不只保存任務事實，也保存制度、安全網與知識系統本身的可查證脈絡；正式責任模型見 `ai-system/contracts.md`。
+本目錄存放已驗證且可重用的知識。知識是 portable system 的事實面，不只保存任務事實，也保存制度、安全網與知識系統本身的可查證脈絡；正式責任模型見 `ai-system/governance/contracts.md`。
 
 分工：
 
