@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git status:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git ls-remote:*)",
+      "Bash(git grep:*)",
+      "Bash(git fetch:*)",
+      "Bash(gh auth status:*)",
+      "Bash(gh pr status:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh release list:*)",
+      "Bash(gh release view:*)",
+      "Edit(.worktrees/**)",
+      "Write(.worktrees/**)",
+      "NotebookEdit(.worktrees/**)",
+      "Edit(/tmp/**)",
+      "Write(/tmp/**)",
+      "NotebookEdit(/tmp/**)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(secrets/**)",
+      "Read(**/secrets/**)",
+      "Read(.claude/settings.local.json)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "failIfUnavailable": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": [
+      "git fetch*",
+      "git ls-remote*",
+      "git push*",
+      "gh auth status*",
+      "gh pr status*",
+      "gh pr view*",
+      "gh pr checks*",
+      "gh run list*",
+      "gh run view*",
+      "gh issue list*",
+      "gh issue view*",
+      "gh release list*",
+      "gh release view*",
+      "gh pr create*",
+      "gh pr merge*",
+      "gh pr edit*",
+      "gh pr close*",
+      "gh pr comment*",
+      "gh pr ready*",
+      "gh release create*",
+      "gh release edit*",
+      "gh release delete*",
+      "gh release upload*",
+      "gh issue create*",
+      "gh issue edit*",
+      "gh issue close*",
+      "gh issue comment*",
+      "gh api*",
+      "gh workflow run*",
+      "ai-system/approved-scripts/allow/*",
+      "/home/ie31415926/my-company/ai-system/approved-scripts/allow/*"
+    ],
+    "filesystem": {
+      "denyWrite": [
+        "./ai-system",
+        "./CLAUDE.md",
+        "./AGENTS.md",
+        "./.claude/hooks"
+      ],
+      "allowWrite": [
+        "/tmp"
+      ],
+      "denyRead": [
+        "~/.aws",
+        "~/.ssh"
+      ]
+    },
+    "network": {
+      "allowedDomains": []
+    }
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "TRUSTED_SCRIPT_DIR=\"<WORKSPACE_ROOT>/ai-system/approved-scripts/allow\" EXPECTED_CWD=\"<WORKSPACE_ROOT>\" python3 \"<CLAUDE_HOME>/hooks/allow_trusted_script_permission.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "EXPECTED_CWD=\"<WORKSPACE_ROOT>\" python3 \"<CLAUDE_HOME>/hooks/allow_worktree_edit_permission.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
