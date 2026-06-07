@@ -8,6 +8,12 @@ skill 承載流程導覽與知識入口，不放 executable script。所有 agen
 
 ## Skill Index
 
+### development
+
+- 入口：`ai-system/skills/development/SKILL.md`
+- 適用：程式碼開發、功能實作、功能修改、缺陷修正、補測試、重構、worktree 隔離、commit 前規劃，或 debug 後的修復實作。
+- 主要任務語彙：implement、develop、feature、fix、refactor、test、實作、開發、修改、修 bug、補測試、重構。
+
 ### system-audit
 
 - 入口：`ai-system/skills/system-audit/SKILL.md`
@@ -19,6 +25,30 @@ skill 承載流程導覽與知識入口，不放 executable script。所有 agen
 - 入口：`ai-system/skills/knowledge-maintenance/SKILL.md`
 - 適用：整理知識、維護 skill index、修剪 references、檢查 repo 知識覆蓋度、維護環境 / context catalog、吸收 friction notes，或整理制度知識與安全網知識。
 - 主要任務語彙：knowledge maintenance、skill cleanup、reference cleanup、coverage、friction notes、system knowledge、safety-net knowledge、知識治理、整理知識、制度知識、安全網知識。
+
+## 任務切換
+
+Skill 執行途中若遇到需要切換任務類型的情況，由當前 skill 說明切換時機與原因，agent 依本索引重新路由，繼續在同一對話中執行新任務。不需結束對話或開新 session。
+
+Skill 文件中「發起 X 任務」即代表此類切換。切換步驟：
+
+1. 在當前 skill 完成必要的交接摘要（例如 debug 結論、已確認事實、未決問題）。
+2. 回到本索引，依任務描述重新路由到對應 skill。
+3. 讀取新 skill 的 `SKILL.md` 繼續執行。
+
+## Extension Point 模式
+
+Portable skill 的 workflow 可能包含 **粗體概念詞**，代表「此處的做法依 workspace 能力決定」。這些稱為 extension point。
+
+Extension point 的運作方式：
+
+- Portable workflow 描述「做什麼」，用粗體概念詞標記「由 workspace 決定怎麼做」的位置。
+- Workspace 的 `skills/README.md` 登記對應 skill，觸發字對齊該概念詞。
+- Agent 執行到 extension point 時，查 README 是否有對應 skill；有則交由該 skill 處理，無則自行判斷或詢問使用者。
+
+**範例**：portable `development` workflow 寫「執行**技術探索**（依 workspace 能力）」。Workspace 若有觸發字包含「技術探索」的 skill，agent 就路由過去；沒有則自行探索。
+
+Workspace skill 的 extension point 覆蓋範圍由觸發字決定，portable skill 不需要知道 workspace skill 的存在。
 
 ## 新增 Workspace Skill 的判準
 
