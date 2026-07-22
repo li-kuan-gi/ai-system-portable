@@ -75,7 +75,7 @@
       "gh api*",
       "gh workflow run*",
       "ai-system/approved-scripts/allow/*",
-      "/home/ie31415926/my-company/ai-system/approved-scripts/allow/*"
+      "<WORKSPACE_ROOT>/ai-system/approved-scripts/allow/*"
     ],
     "filesystem": {
       "denyWrite": [

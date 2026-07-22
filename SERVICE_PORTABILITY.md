@@ -12,6 +12,10 @@ portable core 的目標是讓同一套制度能被不同 AI 服務消費。
 | `implementation-packs/` | 否 | 特定 runtime / launcher 的安全網實作，例如 permission hook 或 sandbox config |
 | instance adapter | 否 | 特定公司、產品、環境、issue tracker、log platform、API |
 
+portable core 的契約與預設流程保持服務中性。若某項整合跨公司可重用、
+保持 optional、只在 runtime 讀取目前 workspace 的服務資料，且不打包
+auth、session、cache 或 log，可以作為具名服務的可選 helper 納入 core。
+
 ## 對任一 AI 服務的共同要求
 
 導入時只需要讓該服務知道：

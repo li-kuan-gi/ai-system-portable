@@ -21,6 +21,8 @@ It does not carry hook installers, per-file command policy, credentials, or inst
 - Public helpers should be narrow, auditable, single-purpose, and explicit about impact.
 - Do not put secrets, tokens, passwords, cookies, or credential values in this directory.
 - Instance-specific helpers belong in the target workspace adapter, not in the portable core.
+- Tool-specific helpers may be portable when they remain optional, cross-company,
+  workspace-scoped, and free of account, environment, product, or target assumptions.
 
 ## Controlled Local Append
 
@@ -71,6 +73,10 @@ Portable helpers:
 - `allow/git-worktree-remove-clean`
 - `allow/git-pull-ff-only-clean`
 
+`git-worktree-add-branch` accepts an optional `--branch <name>` override. The
+helper validates the name with Git and still creates the worktree only under the
+managed `.worktrees/<task>/<repo>/<slot>` path.
+
 `git-pull-ff-only-clean` is a controlled local repo state change exception. It may stay in `allow/` only because it:
 
 1. operates only on repos inside the workspace root
@@ -78,6 +84,37 @@ Portable helpers:
 3. uses only fast-forward pull
 4. does not commit, push, change remotes, delete branches, merge with commits, rebase, or rewrite history
 5. changes only local refs / worktree state for the selected repo
+
+## Controlled Maven Verification
+
+`allow/mvnw-check` runs a command-line allowlist of common Maven verification
+goals only inside managed `.worktrees/` checkouts. It rejects unknown Maven
+options, explicit deploy / image / service goals, custom settings / POM /
+toolchain paths, secret-like property names, and `MAVEN_ARGS` injection.
+
+This helper is not a code sandbox. The selected repository controls `mvnw`,
+POMs, extensions, plugins, and tests. They may execute code, use the network,
+read normal Maven settings, and update the default local dependency cache.
+Use it only for a checkout whose code is already in task scope.
+
+## GitHub PR Preflight
+
+`allow/pr-preflight` produces a non-publishing GitHub PR readiness report for a
+repository inside the workspace. It requires an exact configured remote and
+derives the GitHub owner/repository from that remote instead of silently
+switching targets. By default it does not fetch; `--fetch`
+explicitly contacts that remote and updates local remote-tracking refs and
+`FETCH_HEAD`. It never commits, pushes, creates or edits a PR, merges, or
+triggers workflows.
+
+## Local Conversation History
+
+`allow/chat-history` reads Claude Code and Codex session formats only when the
+recorded working directory is the installed workspace or one of its children.
+It validates unambiguous session ID prefixes, bounds reads and output, and
+applies best-effort sensitive-value redaction. Conversation history remains
+private state: use this helper only after an explicit user request, and never
+copy its raw output into the package.
 
 ## Adding Instance Helpers
 
@@ -89,4 +126,5 @@ Add instance-specific helpers only after deciding:
 4. how it prevents secret leakage
 5. where its usage is documented
 
-If the helper talks to a specific issue tracker, log platform, cloud, database, product API, deployment system, or environment catalog, it is adapter content.
+Helpers that embed a specific account, tenant, host, namespace, environment,
+product API, deployment target, or workspace-only workflow are adapter content.

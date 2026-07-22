@@ -14,6 +14,7 @@
 - 初始化的 agent-readable history / settings context 模板
 - approved script 目錄分類
 - 紀錄追加與受控 git worktree 的通用 helper
+- 可選、跨公司且不綁 account / environment / target 的工具整合
 - AI service adapter / implementation pack 的分層規則
 
 ## 必須留在 Instance Adapter 的內容
@@ -21,7 +22,7 @@
 - 產品、客戶、公司或 domain-specific 工作流
 - 環境 catalog、namespace、host、deploy target、dashboard、database
 - 憑證、本機 secret 檔案與 credential lookup recipe
-- 綁定特定 issue tracker、log platform、cloud、Kubernetes、CI、release 或 API 的 helper
+- 綁定特定 account、tenant、host、namespace、environment、deployment target 或內部 API 的 helper
 - 其他 workspace 的 patchlog / friction notes 歷史紀錄
 - 實際已導入的 user-level safety-net config、auth、session、cache 或 log
 - Codex、Claude Code 或其他 AI 服務的 user-level 私有狀態
@@ -44,7 +45,10 @@ Adapter 檔案不應改變 portable core 契約，除非該變更離開目前 wo
 
 ## Service Pack 形狀
 
-特定 AI 服務的方便工具與設定放在 `service-packs/<service>/` 或 `implementation-packs/<runtime>/`。
+特定 AI 服務的設定、hook、permission、installer 與單一服務 bridge 放在
+`service-packs/<service>/` 或 `implementation-packs/<runtime>/`。同時支援多個
+服務格式、保持 optional 且不攜帶私有狀態的 workspace-scoped helper，可依
+Portable Core 判準納入 `ai-system/`。
 
 可包含：
 
@@ -73,9 +77,10 @@ Adapter 檔案不應改變 portable core 契約，除非該變更離開目前 wo
 4. 確認 `ai-system/skills/README.md` 的每個入口都指向存在的 `SKILL.md`。
 5. 對 `ai-system/approved-scripts/allow/*` 與 `prompt/*` 跑 shell syntax check。
 6. 對 `ai-system/approved-scripts/_lib/*.py` 跑 Python syntax check。
-7. 跑 `patchlog-append --dry-run` 與 `friction-notes-append --dry-run`。
-8. 確認 package 內沒有 secret。
-9. 確認 `governance/patchlog.md`、`governance/friction_notes.md`、`knowledge/context/agent-history.md` 與 `knowledge/context/agent-settings.md` 仍是初始化狀態，未混入來源 workspace 的歷史內容。
+7. 跑 `python3 scripts/probe-approved-helpers.py`。
+8. 跑 `patchlog-append --dry-run` 與 `friction-notes-append --dry-run`。
+9. 確認 package 內沒有 secret。
+10. 確認 `governance/patchlog.md`、`governance/friction_notes.md`、`knowledge/context/agent-history.md` 與 `knowledge/context/agent-settings.md` 仍是初始化狀態，未混入來源 workspace 的歷史內容。
 
 若要為 Codex 一次安裝制度與固定啟動 command，先用 `scripts/install-codex-portable.sh --target-root <WORKSPACE_ROOT> --codex-home <CODEX_HOME> --command-name <COMMAND> --shell-rc <RC> --dry-run` 檢查會寫入哪裡。若刻意不安裝 shell rc alias，`--apply` 時必須互動確認或傳入 `--confirm-no-shell-rc`。若需要讓新 workspace agent 看到既有歷史對話摘要或設定，使用 `--agent-history-file` / `--agent-settings-file` 匯入已整理且不含 secret 的 markdown。
 

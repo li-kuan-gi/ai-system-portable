@@ -1,6 +1,8 @@
 # 可攜 Agent 制度
 
-這是一套不綁定特定公司、產品、環境或 AI 服務的 agent 制度核心。
+這是一套不綁定特定公司、產品或環境的 agent 制度核心。核心契約保持
+AI 服務中性；可選工具整合可以支援具名服務，但不得攜帶私有狀態或
+instance 假設。
 
 ## GitHub 發布狀態
 
@@ -22,10 +24,10 @@
 - workspace skill 路由
 - 初始化的 append-only 治理紀錄
 - agent 可讀的歷史對話與設定模板
-- approved script 目錄結構與少量通用 helper
+- approved script 目錄結構、少量通用 helper 與可選工具整合
 - 不同 AI 服務的 adapter / implementation pack 邊界
 
-它刻意不包含特定 instance 的環境、憑證、業務 domain、issue tracker、log platform、部署流程或產品工作流。那些內容應放在各 workspace 自己的 adapter layer。
+它刻意不包含特定 instance 的環境、憑證、業務 domain、account、target、部署流程或產品工作流。那些內容應放在各 workspace 自己的 adapter layer。
 
 ## 核心模型
 
@@ -47,7 +49,7 @@ portable core 以三種責任分工：
 | Workspace skills | 任務路由與可重複工作流入口 | `ai-system/skills/*/SKILL.md` |
 | Knowledge | 已驗證事實、制度 / 安全網 / 知識系統脈絡與任務知識 | `ai-system/knowledge/` |
 | Safety net | 機械式保護契約與可審查 executable 入口 | `ai-system/safety-net.md`、`ai-system/approved-scripts/allow/`、`prompt/` |
-| Instance adapter | 特定公司 / 產品 / 工具 / 環境內容 | 自訂 skills、knowledge、scripts、secrets |
+| Instance adapter | 特定公司 / 產品 / account / target / 環境內容 | 自訂 skills、knowledge、scripts、secrets |
 | Service pack | 特定 AI 服務的入口、設定、hook / permission 實作 | `service-packs/`、`implementation-packs/` |
 
 ## 導入檢查
@@ -161,6 +163,10 @@ python3 implementation-packs/claude-safety-net/scripts/probe-hook.py
 ## AI 服務分層
 
 Portable core 只定義制度契約，不假設使用 Codex、Claude Code 或其他服務。
+
+Portable core 可以提供跨公司的可選整合，例如讀取 Claude Code／Codex
+session 格式的 workspace-scoped helper；實際 session、auth、cache 與 log
+仍由服務管理，絕不納入 package。
 
 - Codex / OpenAI Codex CLI 相關安全網範例在 `implementation-packs/codex-safety-net/` 與 `service-packs/codex/`。
 - Claude Code 入口模板在 `service-packs/claude-code/`，安全網（hooks + `settings.json`）在 `implementation-packs/claude-safety-net/`，一步安裝用 `scripts/install-claude-portable.sh`。

@@ -75,6 +75,16 @@ Commit 規劃原則：可以分別理解、驗證、review 的改動就拆；拆
 
 確認改動在功能上正確。必須有 fresh evidence，不得只靠推測宣稱完成。
 
+Maven repository 位於 managed `.worktrees/` 時，可使用：
+
+```text
+<WORKSPACE_ROOT>/ai-system/approved-scripts/allow/mvnw-check --repo <WORKTREE_REPO> -- test
+```
+
+此 helper 只限制命令列 goal / option；repository 自己的 wrapper、POM、
+plugin 與 tests 仍會執行程式碼，必須已在任務範圍內並受 runtime sandbox
+約束。
+
 驗證方式依任務性質決定。驗證失敗回到第 4 節處理。
 
 ## 6. 交付確認（Gate）

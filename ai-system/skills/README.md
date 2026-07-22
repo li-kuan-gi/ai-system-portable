@@ -14,11 +14,53 @@ skill 承載流程導覽與知識入口，不放 executable script。所有 agen
 - 適用：程式碼開發、功能實作、功能修改、缺陷修正、補測試、重構、worktree 隔離、commit 前規劃，或 debug 後的修復實作。
 - 主要任務語彙：implement、develop、feature、fix、refactor、test、實作、開發、修改、修 bug、補測試、重構。
 
+### debug
+
+- 入口：`ai-system/skills/debug/SKILL.md`
+- 適用：調查 bug、error、exception、不可重現問題、runtime / log 證據與 root cause；調查階段不修改 code 或遠端狀態。
+- 主要任務語彙：debug、root cause、exception、錯誤、異常、不可重現、調查。
+
+### code-review
+
+- 入口：`ai-system/skills/code-review/SKILL.md`
+- 適用：審查完整 diff、PR、review comment、regression 與測試缺口。
+- 主要任務語彙：review、code review、PR review、finding、regression、測試缺口、審查。
+
+### technical-doc
+
+- 入口：`ai-system/skills/technical-doc/SKILL.md`
+- 適用：撰寫或大幅修改技術文件、規格、會議說明、資料模型與方案比較。
+- 主要任務語彙：technical document、spec、design doc、meeting note、技術文件、規格、方案比較。
+
+### log-analysis
+
+- 入口：`ai-system/skills/log-analysis/SKILL.md`
+- 適用：分析已取得的 log、stack trace、error / exception，分類錯誤並建立 root-cause hypothesis。
+- 主要任務語彙：log、stack trace、exception、trace id、error pattern、日誌分析。
+
+### chat-history
+
+- 入口：`ai-system/skills/chat-history/SKILL.md`
+- 適用：使用者明確要求查找或還原目前 workspace 的 Claude Code／Codex 對話，或稽核 agent 工具結果。
+- 主要任務語彙：chat history、conversation、session、resume、對話歷史、找對話、還原對話、agent 行為稽核。
+
+### ui-verification
+
+- 入口：`ai-system/skills/ui-verification/SKILL.md`
+- 適用：在指定環境驗證 UI 行為、操作 Playwright、建立可回復測資與產出截圖。
+- 主要任務語彙：UI verification、Playwright、browser、screenshot、畫面驗證、截圖。
+
 ### system-audit
 
 - 入口：`ai-system/skills/system-audit/SKILL.md`
 - 適用：制度審計、規則衝突、制度制定、路由重排、分層整理、制度摩擦、agent 不遵守、安全網契約或安全邊界分類調整。
 - 主要任務語彙：governance、audit、rules、conflict、routing、restructure、policy、safety net、hook、permission、sandbox、approved-scripts、制度、審計、規則、安全網。
+
+### safety-net-sync
+
+- 入口：`ai-system/skills/safety-net-sync/SKILL.md`
+- 適用：把 safety-net contract 落實到已導入的 AI 服務、hooks、permissions、sandbox、rules 與 approved scripts，並驗證一致性。
+- 主要任務語彙：safety-net sync、implementation pack、hook、permission、sandbox、config、execution layer、安全網實作。
 
 ### knowledge-maintenance
 

@@ -104,7 +104,9 @@ def add_branch(args: argparse.Namespace) -> None:
     ref = ensure_ref(args.start_ref)
     task = safe_component(args.task, "task")
     slot = safe_component(args.slot, "slot")
-    branch = f"agent/{task}/{slot}"
+    branch = args.branch.strip() if args.branch else f"agent/{task}/{slot}"
+    if not branch:
+        raise WorktreeError("branch name cannot be empty")
     run_git(["check-ref-format", "--branch", branch], cwd=repo)
     path = worktree_path(repo, task, slot)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -174,6 +176,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_branch.add_argument("task")
     p_branch.add_argument("slot")
     p_branch.add_argument("start_ref")
+    p_branch.add_argument(
+        "--branch",
+        default=None,
+        help="branch name to create (default: agent/<task>/<slot>)",
+    )
     p_branch.set_defaults(func=add_branch)
 
     p_remove = sub.add_parser("remove-clean")

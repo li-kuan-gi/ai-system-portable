@@ -4,9 +4,14 @@
 
 ## 範圍
 
-Portable core 的變更應保持服務中性與 instance 中性。請勿加入特定公司、客戶、產品、host、namespace、部署目標、issue tracker、log platform、憑證或私人 workspace 設定。
+Portable core 的契約應保持服務中性，所有內容必須保持 instance 中性。
+請勿加入特定公司、客戶、產品、host、namespace、部署目標、account、
+憑證或私人 workspace 設定。跨公司可重用的可選工具整合可以納入，但
+不得內建 instance target 或私有狀態。
 
-特定 workspace 的內容應放在該 workspace 自己的 adapter layer。特定 AI 服務的整合應放在 `service-packs/` 或 `implementation-packs/`。
+特定 workspace 的內容應放在該 workspace 自己的 adapter layer。特定 AI
+服務的設定、hook、installer 與單一服務 bridge 應放在 `service-packs/` 或
+`implementation-packs/`；跨服務且 instance-neutral 的 optional helper 可留在 core。
 
 ## Pull Request 前檢查
 
@@ -14,6 +19,7 @@ Portable core 的變更應保持服務中性與 instance 中性。請勿加入�
 
 ```sh
 ai-system/approved-scripts/allow/portable-boundary-scan --root .
+python3 scripts/probe-approved-helpers.py
 ```
 
 也建議檢查 shell 與 Python 語法：
